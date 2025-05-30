@@ -17,14 +17,19 @@ namespace MiniTC.View
         {
             InitializeComponent();
 
-            var leftPanelTC = new PanelTC();
-            var rightPanelTC = new PanelTC();
+            var leftPresenter = new LeftTCPresenter(paneltc1);
+            var rightPresenter= new LeftTCPresenter(paneltc2);
             //var model = new MainModel();
 
-            this.Controls.Add(leftPanelTC);
-            this.Controls.Add(rightPanelTC);
+            // Set the presenters in the panels
+            paneltc1.SetPresenter(leftPresenter);
+            paneltc2.SetPresenter(rightPresenter);
 
-            var presenter = new MainPresenter(leftPanelTC, rightPanelTC);
+            // Initialize the drives
+            leftPresenter.ShowDisks();
+            rightPresenter.ShowDisks();
+
+            var mainPresenter = new MainPresenter(paneltc1, paneltc2);
         }
     }
 }

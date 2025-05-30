@@ -23,11 +23,14 @@ namespace MiniTC.Presenter
         public void ShowDisks()
         {
             var disks = _diskOps.GetDisks();
-            // tu np. przekazujesz do widoku
+            _view.SetDisks(disks);
         }
         public void OnDriveChanged(string selectedDrive)
         {
-            
+            if (!string.IsNullOrEmpty(selectedDrive))
+            {
+              
+            }
         }
     }
 }
