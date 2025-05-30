@@ -36,6 +36,16 @@ namespace MiniTC.View
                 comboBox_Drive.SelectedIndex = 0; // automatycznie wybierz pierwszy dysk
         }
 
+        public void SetDirectories (string currentPath)
+        {
+            this.currentPath = currentPath;
+
+            listBox_Folders.Items.Clear();
+            listBox_Folders.Items.AddRange(Directory.GetDirectories(currentPath));
+
+            
+        }
+
 
 
         private void comboBox_Drive_SelectedIndexChanged(object sender, EventArgs e)

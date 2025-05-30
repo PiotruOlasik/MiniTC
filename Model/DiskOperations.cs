@@ -14,5 +14,11 @@ namespace MiniTC.Model
             return drives.ToList();
             //return string.Join(", ", drives);
         }
+
+        public List<string> GetDirectory(string path)
+        {
+            string[] directories = Directory.GetDirectories(path);
+            return directories.ToList();
+        }
     }
 }

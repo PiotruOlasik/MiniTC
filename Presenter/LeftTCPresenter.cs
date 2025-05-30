@@ -25,6 +25,13 @@ namespace MiniTC.Presenter
             var disks = _diskOps.GetDisks();
             _view.SetDisks(disks);
         }
+
+        public void ShowDirectory(string path)
+        {
+            var directory = _diskOps.GetDirectory(path);
+            _view.SetDirectories(path);
+        }
+
         public void OnDriveChanged(string selectedDrive)
         {
             if (!string.IsNullOrEmpty(selectedDrive))
