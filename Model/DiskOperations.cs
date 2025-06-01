@@ -20,6 +20,28 @@ namespace MiniTC.Model
             return directories.ToList();
         }
 
+        public List<string> GetDirectoryContents(string path)
+        {
+            try
+            {
+                var contents = new List<string>();
+
+                // Dodaj ścieżki
+                string[] directories = Directory.GetDirectories(path);
+                contents.AddRange(directories);
+
+                // DOdaj pliki
+                string[] files = Directory.GetFiles(path);
+                contents.AddRange(files);
+
+                return contents;
+            }
+            catch (Exception ex)
+            {
+                return new List<string>(); 
+            }
+        }
+
         public void CopyFile(string sourceFilePath, string destinationFolderPath)
         {
             try
@@ -49,4 +71,3 @@ namespace MiniTC.Model
         }
     }
 }
-

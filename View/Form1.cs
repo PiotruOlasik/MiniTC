@@ -23,11 +23,9 @@ namespace MiniTC.View
             var leftPresenter = new LeftTCPresenter(paneltc1);
             var rightPresenter= new LeftTCPresenter(paneltc2);
 
-            // Set the presenters in the panels
             paneltc1.SetPresenter(leftPresenter);
             paneltc2.SetPresenter(rightPresenter);
 
-            // Initialize the drives
             leftPresenter.ShowDisks();
             rightPresenter.ShowDisks();
 

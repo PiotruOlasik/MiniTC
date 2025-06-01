@@ -17,7 +17,6 @@ namespace MiniTC.Presenter
         public LeftTCPresenter(View.PanelTC view)
         {
             _view = view;
-
         }
 
         public void ShowDisks()
@@ -28,8 +27,8 @@ namespace MiniTC.Presenter
 
         public void ShowDirectory(string path)
         {
-            var directory = _diskOps.GetDirectory(path);
-            _view.SetDirectories(path, directory);
+            var contents = _diskOps.GetDirectoryContents(path);
+            _view.SetDirectories(path, contents);
         }
 
         public void OnDriveChanged(string selectedDrive)
@@ -39,6 +38,7 @@ namespace MiniTC.Presenter
                 ShowDirectory(selectedDrive);
             }
         }
+
         public void OnFolderSelected(string folderPath)
         {
             try
@@ -53,7 +53,16 @@ namespace MiniTC.Presenter
                 }
                 else
                 {
-                    newPath = folderPath;
+                    // Check if it's a directory or file
+                    if (Directory.Exists(folderPath))
+                    {
+                        newPath = folderPath;
+                    }
+                    else
+                    {
+                        // It's a file, don't navigate
+                        return;
+                    }
                 }
 
                 ShowDirectory(newPath);
@@ -66,7 +75,6 @@ namespace MiniTC.Presenter
             {
                 MessageBox.Show($"Error accessing directory: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
         }
     }
 }
