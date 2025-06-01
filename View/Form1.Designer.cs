@@ -30,7 +30,7 @@
         {
             paneltc1 = new PanelTC();
             paneltc2 = new PanelTC();
-            button1 = new Button();
+            button_copy = new Button();
             SuspendLayout();
             // 
             // paneltc1
@@ -47,21 +47,21 @@
             paneltc2.Size = new Size(480, 616);
             paneltc2.TabIndex = 1;
             // 
-            // button1
+            // button_copy
             // 
-            button1.Location = new Point(470, 646);
-            button1.Name = "button1";
-            button1.Size = new Size(75, 23);
-            button1.TabIndex = 2;
-            button1.Text = "button1";
-            button1.UseVisualStyleBackColor = true;
+            button_copy.Location = new Point(470, 646);
+            button_copy.Name = "button_copy";
+            button_copy.Size = new Size(75, 23);
+            button_copy.TabIndex = 2;
+            button_copy.Text = "button1";
+            button_copy.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1025, 699);
-            Controls.Add(button1);
+            Controls.Add(button_copy);
             Controls.Add(paneltc2);
             Controls.Add(paneltc1);
             Name = "Form1";
@@ -73,6 +73,6 @@
 
         private PanelTC paneltc1;
         private PanelTC paneltc2;
-        private Button button1;
+        private Button button_copy;
     }
 }

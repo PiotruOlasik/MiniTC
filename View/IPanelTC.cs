@@ -13,8 +13,9 @@ namespace MiniTC.View
         
         List<string> drives { get;} 
 
-        void SetDisks(List<string> drives);      
-        
+        void SetDisks(List<string> drives);
+
+        void SetDirectories(string currentPath, List<string> directories);
 
     }
 }

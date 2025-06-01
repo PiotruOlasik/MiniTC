@@ -13,12 +13,12 @@ namespace MiniTC.View
         {
             InitializeComponent();
             comboBox_Drive.SelectedIndexChanged += comboBox_Drive_SelectedIndexChanged;
+            listBox_Folders.DoubleClick += listBox_Folders_DoubleClick;
         }
 
         public void SetPresenter(LeftTCPresenter presenter)
         {
             _presenter = presenter;
-          //  _presenter.LoadDisks();
         }
 
         public string currentPath { get; private set;}
@@ -36,22 +36,59 @@ namespace MiniTC.View
                 comboBox_Drive.SelectedIndex = 0; // automatycznie wybierz pierwszy dysk
         }
 
-        public void SetDirectories (string currentPath)
+        public void SetDirectories(string currentPath, List<string> directories)
         {
             this.currentPath = currentPath;
-
             listBox_Folders.Items.Clear();
-            listBox_Folders.Items.AddRange(Directory.GetDirectories(currentPath));
 
-            
+            if (Directory.GetParent(currentPath) != null)
+            {
+                listBox_Folders.Items.Add("..");
+            }
+
+            listBox_Folders.Items.AddRange(directories.ToArray());
+
+            // Odświeżenie pokazanje ścieżki
+            richTextBox_Path.Text = currentPath;
         }
 
+        private void listBox_Folders_DoubleClick(object sender, EventArgs e)
+        {
+            if (listBox_Folders.SelectedItem != null)
+            {
+                string selectedFolder = listBox_Folders.SelectedItem.ToString();
+                _presenter?.OnFolderSelected(selectedFolder);
+            }
+        }
 
 
         private void comboBox_Drive_SelectedIndexChanged(object sender, EventArgs e)
         {
             // Poinformuj prezentera o zmianie ścieżki
             _presenter?.OnDriveChanged(comboBox_Drive.SelectedItem?.ToString());
+        }
+
+        public string GetSelectedFile()
+        {
+            if (listBox_Folders.SelectedItem != null)
+            {
+                string selectedItem = listBox_Folders.SelectedItem.ToString();
+
+                // Sprawdzenie czy to jest plik, a nie ścieżka
+                if (File.Exists(selectedItem))
+                {
+                    return selectedItem;
+                }
+            }
+            return null; 
+        }
+
+        public void RefreshFiles()
+        {
+            if (!string.IsNullOrEmpty(currentPath))
+            {
+                SetDirectories(currentPath);
+            }
         }
 
     }
