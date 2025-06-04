@@ -21,6 +21,7 @@ namespace MiniTC.View
         {
             InitializeComponent();
 
+            // Stwórz oddzielne presentery dla każdego panelu
             var leftPresenter = new LeftTCPresenter(paneltc1);
             var rightPresenter = new LeftTCPresenter(paneltc2);
 
@@ -93,6 +94,11 @@ namespace MiniTC.View
         private void SetActivePanel(PanelTC panel)
         {
             _activePanel = panel;
+
+            // Opcjonalnie: wizualne oznaczenie aktywnego panelu
+            paneltc1.BackColor = (panel == paneltc1) ? Color.LightBlue : SystemColors.Control;
+            paneltc2.BackColor = (panel == paneltc2) ? Color.LightBlue : SystemColors.Control;
+
             UpdateButtonText();
         }
 

@@ -9,7 +9,7 @@ namespace MiniTC.View
 {
     public partial class PanelTC : UserControl, IPanelTC
     {
-        private LeftTCPresenter _presenter;
+        private LeftTCPresenter _leftPresenter;
 
         public PanelTC()
         {
@@ -21,8 +21,10 @@ namespace MiniTC.View
 
         public void SetPresenter(LeftTCPresenter presenter)
         {
-            _presenter = presenter;
+            _leftPresenter = presenter;
         }
+
+        
 
         public string currentPath { get; private set; } = "";
         public List<string> currentPathContent { get; private set; } = new List<string>();
@@ -82,15 +84,14 @@ namespace MiniTC.View
         private void ComboBox_Drive_DropDown(object sender, EventArgs e)
         {
             // Odśwież dostępne dyski gdy lista rozwijana jest otwierana
-            _presenter?.ShowDisks();
+            _leftPresenter?.ShowDisks();
         }
 
         private void comboBox_Drive_SelectedIndexChanged(object sender, EventArgs e)
         {
-            _presenter?.OnDriveChanged(comboBox_Drive.SelectedItem?.ToString());
+            string selectedDrive = comboBox_Drive.SelectedItem?.ToString();
+            _leftPresenter?.OnDriveChanged(selectedDrive);
         }
-
-        
 
         private void listBox_Folders_DoubleClick(object sender, EventArgs e)
         {
@@ -100,7 +101,7 @@ namespace MiniTC.View
 
                 if (selectedItem == "..")
                 {
-                    _presenter?.OnFolderSelected("..");
+                    _leftPresenter?.OnFolderSelected("..");
                     return;
                 }
 
@@ -121,7 +122,7 @@ namespace MiniTC.View
 
                 if (!string.IsNullOrEmpty(fullPath))
                 {
-                    _presenter?.OnFolderSelected(fullPath);
+                    _leftPresenter?.OnFolderSelected(fullPath);
                 }
             }
         }
@@ -158,7 +159,7 @@ namespace MiniTC.View
         {
             if (!string.IsNullOrEmpty(currentPath))
             {
-                _presenter?.ShowDirectory(currentPath);
+                _leftPresenter?.ShowDirectory(currentPath);
             }
         }
 
