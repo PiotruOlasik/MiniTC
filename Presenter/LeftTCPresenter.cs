@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace MiniTC.Presenter
 {
@@ -21,14 +22,41 @@ namespace MiniTC.Presenter
 
         public void ShowDisks()
         {
-            var disks = _diskOps.GetDisks();
-            _view.SetDisks(disks);
+            try
+            {
+                var disks = _diskOps.GetDisks();
+                _view.SetDisks(disks);
+                _view.PopulateDriveComboBox();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Błąd podczas wczytywania dysków: {ex.Message}", "Błąd",
+                              MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         public void ShowDirectory(string path)
         {
-            var contents = _diskOps.GetDirectoryContents(path);
-            _view.SetDirectories(path, contents);
+            try
+            {
+                var contents = _diskOps.GetDirectoryContents(path);
+                _view.SetDirectories(path, contents);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                MessageBox.Show("Dostęp do tego folderu jest zabroniony.", "Zabroniony dostęp",
+                              MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            catch (DirectoryNotFoundException)
+            {
+                MessageBox.Show("Nie znaleziono folderu.", "Nie znaleziono folderu",
+                              MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Błąd podczas dostępu do folderu: {ex.Message}", "Błąd",
+                              MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         public void OnDriveChanged(string selectedDrive)
@@ -53,7 +81,7 @@ namespace MiniTC.Presenter
                 }
                 else
                 {
-                    // Check if it's a directory or file
+                    // Check if it's a directory
                     if (Directory.Exists(folderPath))
                     {
                         newPath = folderPath;
@@ -69,11 +97,26 @@ namespace MiniTC.Presenter
             }
             catch (UnauthorizedAccessException)
             {
-                MessageBox.Show("Access denied to this folder.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Access denied to this folder.", "Access Denied",
+                              MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            catch (DirectoryNotFoundException)
+            {
+                MessageBox.Show("Directory not found.", "Directory Not Found",
+                              MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error accessing directory: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Error accessing directory: {ex.Message}", "Error",
+                              MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        public void RefreshCurrentDirectory()
+        {
+            if (!string.IsNullOrEmpty(_view.currentPath))
+            {
+                ShowDirectory(_view.currentPath);
             }
         }
     }

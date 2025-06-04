@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace MiniTC.Model
 {
@@ -10,14 +11,40 @@ namespace MiniTC.Model
     {
         public List<string> GetDisks()
         {
-            string[] drives = Directory.GetLogicalDrives();
-            return drives.ToList();
+            var availableDrives = new List<string>();
+
+            try
+            {
+                DriveInfo[] drives = DriveInfo.GetDrives();
+
+                foreach (DriveInfo drive in drives)
+                {
+                    // Tylko gotowe dyski
+                    if (drive.IsReady)
+                    {
+                        availableDrives.Add(drive.Name);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                
+            }
+
+            return availableDrives;
         }
 
         public List<string> GetDirectory(string path)
         {
-            string[] directories = Directory.GetDirectories(path);
-            return directories.ToList();
+            try
+            {
+                string[] directories = Directory.GetDirectories(path);
+                return directories.ToList();
+            }
+            catch (Exception ex)
+            {
+                return new List<string>();
+            }
         }
 
         public List<string> GetDirectoryContents(string path)
@@ -26,19 +53,27 @@ namespace MiniTC.Model
             {
                 var contents = new List<string>();
 
-                // Dodaj ścieżki
+                // Najpierw oddaj foldery
                 string[] directories = Directory.GetDirectories(path);
                 contents.AddRange(directories);
 
-                // DOdaj pliki
+                // Póżniej pkiki
                 string[] files = Directory.GetFiles(path);
                 contents.AddRange(files);
 
                 return contents;
             }
+            catch (UnauthorizedAccessException)
+            {
+                return new List<string>();
+            }
+            catch (DirectoryNotFoundException)
+            {
+                return new List<string>();
+            }
             catch (Exception ex)
             {
-                return new List<string>(); 
+                return new List<string>();
             }
         }
 
@@ -46,14 +81,39 @@ namespace MiniTC.Model
         {
             try
             {
+                if (!File.Exists(sourceFilePath))
+                {
+                    throw new FileNotFoundException($"Nie znalezono pliku źródłowego: {sourceFilePath}");
+                }
+
+                if (!Directory.Exists(destinationFolderPath))
+                {
+                    throw new DirectoryNotFoundException($"Nie znalezono folderu źródłowego: {destinationFolderPath}");
+                }
+
                 string fileName = Path.GetFileName(sourceFilePath);
                 string destinationFilePath = Path.Combine(destinationFolderPath, fileName);
 
-                File.Copy(sourceFilePath, destinationFilePath, overwrite: true);
+                if (File.Exists(destinationFilePath))
+                {
+                    File.Copy(sourceFilePath, destinationFilePath, overwrite: true);
+                }
+                else
+                {
+                    File.Copy(sourceFilePath, destinationFilePath);
+                }
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                throw new Exception($"Odmowa dostępu: {ex.Message}");
+            }
+            catch (IOException ex)
+            {
+                throw new Exception($"Błąd I/O podczas kopiowania: {ex.Message}");
             }
             catch (Exception ex)
             {
-                throw new Exception($"Błąd przy kopiowaniu plików: {ex.Message}");
+                throw new Exception($"Błąd podczas koiowania pliku: {ex.Message}");
             }
         }
 
@@ -66,7 +126,43 @@ namespace MiniTC.Model
             }
             catch (Exception ex)
             {
-                return new List<string>(); // Zwraca pustą listę w przypadku błędu
+                return new List<string>();
+            }
+        }
+
+        public bool IsDirectory(string path)
+        {
+            try
+            {
+                return Directory.Exists(path);
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public bool IsFile(string path)
+        {
+            try
+            {
+                return File.Exists(path);
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public string GetParentDirectory(string path)
+        {
+            try
+            {
+                return Path.GetDirectoryName(path);
+            }
+            catch
+            {
+                return null;
             }
         }
     }
