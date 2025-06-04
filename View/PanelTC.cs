@@ -9,7 +9,7 @@ namespace MiniTC.View
 {
     public partial class PanelTC : UserControl, IPanelTC
     {
-        private LeftTCPresenter _leftPresenter;
+        private TCPresenter _leftPresenter;
 
         public PanelTC()
         {
@@ -19,7 +19,7 @@ namespace MiniTC.View
             listBox_Folders.DoubleClick += listBox_Folders_DoubleClick;
         }
 
-        public void SetPresenter(LeftTCPresenter presenter)
+        public void SetPresenter(TCPresenter presenter)
         {
             _leftPresenter = presenter;
         }

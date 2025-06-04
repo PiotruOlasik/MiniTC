@@ -10,12 +10,12 @@ using System.IO;
 
 namespace MiniTC.Presenter
 {
-    public class LeftTCPresenter
+    public class TCPresenter
     {
         private View.PanelTC _view;
         private DiskOperations _diskOps = new DiskOperations();
 
-        public LeftTCPresenter(View.PanelTC view)
+        public TCPresenter(View.PanelTC view)
         {
             _view = view;
         }

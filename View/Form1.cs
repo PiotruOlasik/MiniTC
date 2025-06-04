@@ -22,8 +22,8 @@ namespace MiniTC.View
             InitializeComponent();
 
             // Stwórz oddzielne presentery dla każdego panelu
-            var leftPresenter = new LeftTCPresenter(paneltc1);
-            var rightPresenter = new LeftTCPresenter(paneltc2);
+            var leftPresenter = new TCPresenter(paneltc1);
+            var rightPresenter = new TCPresenter(paneltc2);
 
             paneltc1.SetPresenter(leftPresenter);
             paneltc2.SetPresenter(rightPresenter);

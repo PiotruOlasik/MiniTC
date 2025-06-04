@@ -98,7 +98,7 @@
 
         private ComboBox comboBox_Drive;
         private RichTextBox richTextBox_Path;
-        private ListBox listBox_Folders;
+        public ListBox listBox_Folders;
         private Label label1;
         private Label label2;
     }
