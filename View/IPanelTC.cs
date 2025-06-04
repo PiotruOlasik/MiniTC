@@ -7,40 +7,40 @@ using System.Threading.Tasks;
 namespace MiniTC.View
 {
     /// <summary>
-    /// Interface defining the public contract for PanelTC user control
-    /// According to project requirements, the public interface should contain:
-    /// - Current path property
-    /// - Collection of available drives
-    /// - Collection containing current path contents
+    /// Interfejs definiujący publiczny kontrakt dla kontrolki użytkownika PanelTC
+    /// Zgodnie z wymaganiami projektu, publiczny interfejs powinien zawierać:
+    /// - Właściwość bieżącej ścieżki
+    /// - Kolekcję dostępnych dysków
+    /// - Kolekcję zawierającą zawartość bieżącej ścieżki
     /// </summary>
     internal interface IPanelTC
     {
         /// <summary>
-        /// Current path being displayed in the panel
+        /// Bieżąca ścieżka wyświetlana w panelu
         /// </summary>
         string currentPath { get; }
 
         /// <summary>
-        /// Collection containing the contents of the current path
+        /// Kolekcja zawierająca zawartość bieżącej ścieżki
         /// </summary>
         List<string> currentPathContent { get; }
 
         /// <summary>
-        /// Collection of available drives
+        /// Kolekcja dostępnych dysków
         /// </summary>
         List<string> drives { get; }
 
         /// <summary>
-        /// Sets the available drives in the panel
+        /// Ustawia dostępne dyski w panelu
         /// </summary>
-        /// <param name="drives">List of available drive letters</param>
+        /// <param name="drives">Lista dostępnych liter dysków</param>
         void SetDisks(List<string> drives);
 
         /// <summary>
-        /// Sets the current directory and its contents
+        /// Ustawia bieżący katalog i jego zawartość
         /// </summary>
-        /// <param name="currentPath">Path to the current directory</param>
-        /// <param name="directories">List of directory contents (directories and files)</param>
+        /// <param name="currentPath">Ścieżka do bieżącego katalogu</param>
+        /// <param name="directories">Lista zawartości katalogu (foldery i pliki)</param>
         void SetDirectories(string currentPath, List<string> directories);
     }
 }

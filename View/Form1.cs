@@ -16,12 +16,13 @@ namespace MiniTC.View
     {
         private PanelTC _activePanel;
         private PanelTC _passivePanel;
+
         public Form1()
         {
             InitializeComponent();
 
             var leftPresenter = new LeftTCPresenter(paneltc1);
-            var rightPresenter= new LeftTCPresenter(paneltc2);
+            var rightPresenter = new LeftTCPresenter(paneltc2);
 
             paneltc1.SetPresenter(leftPresenter);
             paneltc2.SetPresenter(rightPresenter);
@@ -33,6 +34,7 @@ namespace MiniTC.View
 
             button_copy.Click += ButtonCopy_Click;
 
+            // Obsługa kliknięć paneli - ustawianie aktywnego i pasywnego panelu
             paneltc1.Click += (s, e) =>
             {
                 SetActivePanel(paneltc1);
@@ -44,6 +46,7 @@ namespace MiniTC.View
                 SetPassivePanel(paneltc1);
             };
 
+            // Domyślnie ustaw lewy panel jako aktywny
             SetActivePanel(paneltc1);
             SetPassivePanel(paneltc2);
         }
@@ -56,7 +59,7 @@ namespace MiniTC.View
 
                 if (string.IsNullOrEmpty(selectedFile))
                 {
-                    MessageBox.Show("Wybierz plik do skopiwoania.", "Nie wybrano pliku",
+                    MessageBox.Show("Wybierz plik do skopiowania.", "Nie wybrano pliku",
                                   MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
@@ -65,19 +68,19 @@ namespace MiniTC.View
 
                 if (string.IsNullOrEmpty(destinationFolder))
                 {
-                    MessageBox.Show("Niewłaściwa ścieżka docelowa.", "Błąd",
+                    MessageBox.Show("Nieprawidłowa ścieżka docelowa.", "Błąd",
                                   MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
-                // Get the disk operations instance (you'll need to access this)
+                // Pobierz instancję operacji na dysku
                 var diskOps = new DiskOperations();
                 diskOps.CopyFile(selectedFile, destinationFolder);
 
-                // Odświeżenie panelu docelowego
+                // Odśwież panel docelowy
                 _passivePanel.RefreshFiles();
 
-                MessageBox.Show("Pomyślnie skopiowano plik", "Sukces",
+                MessageBox.Show("Plik został pomyślnie skopiowany.", "Sukces",
                               MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)

@@ -17,7 +17,6 @@ namespace MiniTC.View
             comboBox_Drive.DropDown += ComboBox_Drive_DropDown;
             comboBox_Drive.SelectedIndexChanged += comboBox_Drive_SelectedIndexChanged;
             listBox_Folders.DoubleClick += listBox_Folders_DoubleClick;
-            listBox_Folders.Click += listBox_Folders_Click;
         }
 
         public void SetPresenter(LeftTCPresenter presenter)
@@ -40,30 +39,31 @@ namespace MiniTC.View
             this.currentPathContent = contents;
             listBox_Folders.Items.Clear();
 
+            // Dodaj opcję ".." jeśli nie jesteśmy w katalogu głównym
             if (!IsRootDirectory(currentPath))
             {
                 listBox_Folders.Items.Add("..");
             }
 
-            // Separate directories and files
+            // Rozdziel katalogi i pliki
             var directories = contents.Where(item => Directory.Exists(item)).ToList();
             var files = contents.Where(item => File.Exists(item)).ToList();
 
-            // DOdanie prefuksu <D>
+            // Dodaj prefiks <D> do katalogów
             foreach (string directory in directories)
             {
                 string displayName = $"<D> {Path.GetFileName(directory)}";
                 listBox_Folders.Items.Add(displayName);
             }
 
-            // Add files after directories
+            // Dodaj pliki po katalogach
             foreach (string file in files)
             {
                 string displayName = Path.GetFileName(file);
                 listBox_Folders.Items.Add(displayName);
             }
 
-            // Update path display
+            // Zaktualizuj wyświetlanie ścieżki
             richTextBox_Path.Text = currentPath;
         }
 
@@ -81,7 +81,7 @@ namespace MiniTC.View
 
         private void ComboBox_Drive_DropDown(object sender, EventArgs e)
         {
-            // Refresh available drives when dropdown is opened
+            // Odśwież dostępne dyski gdy lista rozwijana jest otwierana
             _presenter?.ShowDisks();
         }
 
@@ -90,10 +90,7 @@ namespace MiniTC.View
             _presenter?.OnDriveChanged(comboBox_Drive.SelectedItem?.ToString());
         }
 
-        private void listBox_Folders_Click(object sender, EventArgs e)
-        {
-            // Handle single click for selection
-        }
+        
 
         private void listBox_Folders_DoubleClick(object sender, EventArgs e)
         {
@@ -107,18 +104,18 @@ namespace MiniTC.View
                     return;
                 }
 
-                // Remove the <D> prefix and get the actual path
+                // Usuń prefiks <D> i pobierz rzeczywistą ścieżkę
                 string actualName;
                 if (selectedItem.StartsWith("<D> "))
                 {
-                    actualName = selectedItem.Substring(4); // Remove "<D> "
+                    actualName = selectedItem.Substring(4); // Usuń "<D> "
                 }
                 else
                 {
                     actualName = selectedItem;
                 }
 
-                // Find the full path from currentPathContent
+                // Znajdź pełną ścieżkę z currentPathContent
                 string fullPath = currentPathContent?.FirstOrDefault(path =>
                     Path.GetFileName(path) == actualName);
 
@@ -135,20 +132,20 @@ namespace MiniTC.View
             {
                 string selectedItem = listBox_Folders.SelectedItem.ToString();
 
-                // Skip parent directory and directories
+                // Pomiń katalog nadrzędny i katalogi
                 if (selectedItem == ".." || selectedItem.StartsWith("<D> "))
                 {
                     return null;
                 }
 
-                // Get the actual filename
+                // Pobierz rzeczywistą nazwę pliku
                 string fileName = selectedItem;
 
-                // Find the full path from currentPathContent
+                // Znajdź pełną ścieżkę z currentPathContent
                 string fullPath = currentPathContent?.FirstOrDefault(path =>
                     Path.GetFileName(path) == fileName);
 
-                // Verify it's a file
+                // Sprawdź czy to jest plik
                 if (!string.IsNullOrEmpty(fullPath) && File.Exists(fullPath))
                 {
                     return fullPath;

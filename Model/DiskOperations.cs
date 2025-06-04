@@ -19,7 +19,7 @@ namespace MiniTC.Model
 
                 foreach (DriveInfo drive in drives)
                 {
-                    // Tylko gotowe dyski
+                    // Tylko dyski gotowe do użycia
                     if (drive.IsReady)
                     {
                         availableDrives.Add(drive.Name);
@@ -28,7 +28,7 @@ namespace MiniTC.Model
             }
             catch (Exception ex)
             {
-                
+                // Błąd podczas pobierania listy dysków - zwracamy pustą listę
             }
 
             return availableDrives;
@@ -53,11 +53,11 @@ namespace MiniTC.Model
             {
                 var contents = new List<string>();
 
-                // Najpierw oddaj foldery
+                // Najpierw dodaj foldery
                 string[] directories = Directory.GetDirectories(path);
                 contents.AddRange(directories);
 
-                // Póżniej pkiki
+                // Następnie dodaj pliki
                 string[] files = Directory.GetFiles(path);
                 contents.AddRange(files);
 
@@ -83,12 +83,12 @@ namespace MiniTC.Model
             {
                 if (!File.Exists(sourceFilePath))
                 {
-                    throw new FileNotFoundException($"Nie znalezono pliku źródłowego: {sourceFilePath}");
+                    throw new FileNotFoundException($"Nie znaleziono pliku źródłowego: {sourceFilePath}");
                 }
 
                 if (!Directory.Exists(destinationFolderPath))
                 {
-                    throw new DirectoryNotFoundException($"Nie znalezono folderu źródłowego: {destinationFolderPath}");
+                    throw new DirectoryNotFoundException($"Nie znaleziono folderu docelowego: {destinationFolderPath}");
                 }
 
                 string fileName = Path.GetFileName(sourceFilePath);
@@ -113,7 +113,7 @@ namespace MiniTC.Model
             }
             catch (Exception ex)
             {
-                throw new Exception($"Błąd podczas koiowania pliku: {ex.Message}");
+                throw new Exception($"Błąd podczas kopiowania pliku: {ex.Message}");
             }
         }
 

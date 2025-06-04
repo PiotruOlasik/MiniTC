@@ -44,12 +44,12 @@ namespace MiniTC.Presenter
             }
             catch (UnauthorizedAccessException)
             {
-                MessageBox.Show("Dostęp do tego folderu jest zabroniony.", "Zabroniony dostęp",
+                MessageBox.Show("Dostęp do tego folderu jest zabroniony.", "Odmowa dostępu",
                               MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             catch (DirectoryNotFoundException)
             {
-                MessageBox.Show("Nie znaleziono folderu.", "Nie znaleziono folderu",
+                MessageBox.Show("Nie znaleziono folderu.", "Folder nie istnieje",
                               MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             catch (Exception ex)
@@ -75,20 +75,20 @@ namespace MiniTC.Presenter
 
                 if (folderPath == "..")
                 {
-                    // Navigate to parent directory
+                    // Przejdź do folderu nadrzędnego
                     DirectoryInfo parent = Directory.GetParent(_view.currentPath);
                     newPath = parent?.FullName ?? _view.currentPath;
                 }
                 else
                 {
-                    // Check if it's a directory
+                    // Sprawdź czy to jest folder
                     if (Directory.Exists(folderPath))
                     {
                         newPath = folderPath;
                     }
                     else
                     {
-                        // It's a file, don't navigate
+                        // To jest plik, nie nawiguj
                         return;
                     }
                 }
@@ -97,17 +97,17 @@ namespace MiniTC.Presenter
             }
             catch (UnauthorizedAccessException)
             {
-                MessageBox.Show("Access denied to this folder.", "Access Denied",
+                MessageBox.Show("Dostęp do tego folderu jest zabroniony.", "Odmowa dostępu",
                               MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             catch (DirectoryNotFoundException)
             {
-                MessageBox.Show("Directory not found.", "Directory Not Found",
+                MessageBox.Show("Nie znaleziono folderu.", "Folder nie istnieje",
                               MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error accessing directory: {ex.Message}", "Error",
+                MessageBox.Show($"Błąd podczas dostępu do folderu: {ex.Message}", "Błąd",
                               MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
