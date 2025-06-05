@@ -18,7 +18,6 @@ namespace MiniTC.Presenter
         {
             _view1 = view1;
             _view2 = view2;
-            // _model = model; // Zakomentowane - model nie jest jeszcze zaimplementowany
         }
     }
 }
